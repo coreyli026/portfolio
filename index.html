@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corey Li — Health Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090f;
+  --bg2: #0c1020;
+  --panel: rgba(12,16,32,0.92);
+  --text: #d8d4c8;
+  --muted: #546080;
+  --accent: #4fd1c8;
+  --pulse: #e05878;
+  --gold: #c8a055;
+  --dim: #1a2540;
+  --glow: rgba(79,209,200,0.18);
+  --body-dim: #1c2d50;
+  --body-bright: #4fd1c8;
+  --body-pulse: #e05878;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* ─── LAYOUT ─── */
+.wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content-col {
+  width: 52%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+.body-col {
+  z-index: 5;
+  width: 48%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 64px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-weight: 300;
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  margin-top: 24px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  line-height: 2;
+  max-width: 360px;
+}
+
+.hero-scroll {
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: var(--muted);
+  animation: scrollPulse 2s 1.5s infinite;
+}
+
+/* ─── SECTION BASE (always present, first rule) ─── */
+.section {
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+
+.section-tag {
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section h2 {
+  font-size: clamp(34px, 4vw, 54px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+
+.section h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.section p {
+  font-size: 11px;
+  line-height: 2.2;
+  color: rgba(216, 212, 200, 0.82);
+  max-width: 420px;
+}
+
+
+.section p + p { margin-top: 16px; }
+
+.section-tag.tight {
+  margin-top: 26px;
+  margin-bottom: 6px;
+}
+
+/* ─── STAT ROWS ─── */
+.stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  border-left: 1px solid var(--dim);
+  padding-left: 16px;
+}
+
+.stat-num {
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ─── SKILL PILLS ─── */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+  max-width: 420px;
+}
+
+.skills-grid.tight {
+  margin-top: 8px;
+}
+
+.skill-pill {
+  border: 1px solid var(--dim);
+  padding: 6px 14px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.skill-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── TIMELINE ─── */
+.timeline { margin-top: 32px; }
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: 89px;
+  top: 8px;
+  bottom: -24px;
+  width: 1px;
+  background: var(--dim);
+}
+
+.tl-item:last-child::before { display: none; }
+
+.tl-year {
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  padding-top: 3px;
+  text-align: right;
+}
+
+.tl-dot {
+  position: absolute;
+  left: 85px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  border-radius: 50%;
+}
+
+.tl-body { padding-left: 20px; }
+
+.tl-title {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 400;
+}
+
+.tl-sub {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ─── CONTACT ─── */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--dim);
+  padding-bottom: 16px;
+  transition: all 0.3s;
+}
+
+.contact-link:hover { color: var(--accent); border-color: var(--accent); }
+
+.contact-link span { color: var(--muted); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; width: 60px; }
+
+/* ─── HUMAN BODY SVG ─── */
+.body-svg-wrap {
+  position: relative;
+  width: 260px;
+  height: 580px;
+}
+
+#bodySVG {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 10;
+  position: relative;
+}
+
+/* Base strokes */
+.body-outline, .body-inner {
+  fill: none;
+  stroke: var(--body-dim);
+  stroke-width: 1.2;
+  transition: stroke 1.4s, opacity 1.4s, filter 1.4s;
+}
+
+.body-inner { stroke-width: 0.7; stroke-dasharray: 3,4; opacity: 0.4; }
+
+/* Organ markers */
+.organ-marker {
+  fill: none;
+  stroke: var(--body-dim);
+  stroke-width: 1;
+  transition: stroke 1.4s, opacity 1.4s;
+}
+
+/* Active body regions */
+.region-head.active .body-outline   { stroke: var(--body-bright); filter: drop-shadow(0 0 6px var(--body-bright)); }
+.region-head.active .organ-marker   { stroke: var(--body-bright); }
+
+.region-heart.active .body-outline  { stroke: var(--body-pulse); filter: drop-shadow(0 0 6px var(--body-pulse)); }
+.region-heart.active .organ-marker  { stroke: var(--body-pulse); }
+
+.region-arms.active .body-outline   { stroke: var(--body-bright); filter: drop-shadow(0 0 6px var(--body-bright)); }
+
+.region-torso.active .body-outline  { stroke: var(--gold); filter: drop-shadow(0 0 6px var(--gold)); }
+.region-torso.active .organ-marker  { stroke: var(--gold); }
+
+.region-legs.active .body-outline   { stroke: var(--body-bright); filter: drop-shadow(0 0 6px var(--body-bright)); }
+
+/* Annotation dots on body */
+.anno-dot {
+  display: none;
+}
+
+.region-head.active   .anno-dot { fill: var(--body-bright); filter: drop-shadow(0 0 5px var(--body-bright)); }
+.region-heart.active  .anno-dot { fill: var(--body-pulse);  filter: drop-shadow(0 0 5px var(--body-pulse)); }
+.region-arms.active   .anno-dot { fill: var(--body-bright); filter: drop-shadow(0 0 5px var(--body-bright)); }
+.region-torso.active  .anno-dot { fill: var(--gold);        filter: drop-shadow(0 0 5px var(--gold)); }
+.region-legs.active   .anno-dot { fill: var(--body-bright); filter: drop-shadow(0 0 5px var(--body-bright)); }
+
+/* Body label annotations */
+.body-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 6.5px;
+  fill: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: fill 1.4s, opacity 1.4s;
+  opacity: 0;
+}
+
+.region-head.active   .body-label { fill: var(--body-bright); opacity: 1; }
+.region-heart.active  .body-label { fill: var(--body-pulse);  opacity: 1; }
+.region-arms.active   .body-label { fill: var(--body-bright); opacity: 1; }
+.region-torso.active  .body-label { fill: var(--gold);        opacity: 1; }
+.region-legs.active   .body-label { fill: var(--body-bright); opacity: 1; }
+
+/* Anno lines on SVG */
+.anno-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.6;
+  stroke-dasharray: 4,3;
+  opacity: 0;
+  transition: opacity 1.4s;
+}
+
+.region-head.active   .anno-line { opacity: 0.6; color: var(--body-bright); }
+.region-heart.active  .anno-line { opacity: 0.6; color: var(--body-pulse); }
+.region-arms.active   .anno-line { opacity: 0.6; color: var(--body-bright); }
+.region-torso.active  .anno-line { opacity: 0.6; color: var(--gold); }
+.region-legs.active   .anno-line { opacity: 0.6; color: var(--body-bright); }
+
+/* Idle dim overlay */
+.body-dim-overlay {
+  opacity: 1;
+  transition: opacity 1.4s;
+}
+
+
+
+/* Background grid */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--dim) 1px, transparent 1px),
+    linear-gradient(90deg, var(--dim) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── SECTION & HERO: absolute stacked ─── */
+.hero, .section {
+  position: absolute;
+  inset: 0;
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  /* No transition on container — children animate themselves */
+}
+
+.hero.visible, .section.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Children handle all visibility — start hidden */
+.section > *, .hero > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0s;
+}
+
+/* On enter: stagger slightly so elements cascade in together */
+.section.visible > *:nth-child(1), .hero.visible > *:nth-child(1) { transition-delay: 0s;    }
+.section.visible > *:nth-child(2), .hero.visible > *:nth-child(2) { transition-delay: 0.1s;  }
+.section.visible > *:nth-child(3), .hero.visible > *:nth-child(3) { transition-delay: 0.18s; }
+.section.visible > *:nth-child(4), .hero.visible > *:nth-child(4) { transition-delay: 0.26s; }
+.section.visible > *:nth-child(5), .hero.visible > *:nth-child(5) { transition-delay: 0.32s; }
+.section.visible > *:nth-child(6), .hero.visible > *:nth-child(6) { transition-delay: 0.38s; }
+
+.section.visible > *, .hero.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Keyframes */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.15); }
+  60%       { transform: scale(0.95); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { width: 40px; opacity: 0.5; }
+  50%       { width: 70px; opacity: 1; }
+}
+
+@keyframes subtlePulse {
+  0%,100% { opacity: 0.3; }
+  50%     { opacity: 0.7; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wrapper { flex-direction: column; }
+  .body-col { display: none; }
+  .content-col { width: 100%; }
+  .hero, .section { padding: 60px 28px; }
+  .section-divider { width: calc(100% - 56px); margin: 0 28px; }
+}
+
+/* Nav dots */
+.nav-dots {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 100;
+}
+
+.nav-dot {
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.1s;
+  z-index: 999;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Dropdown menu */
+.dropdown-nav {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 1000;
+}
+
+.dropdown-toggle {
+  min-width: 190px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border: 1px solid rgba(79, 209, 200, 0.3);
+  background: rgba(7, 9, 15, 0.88);
+  color: var(--text);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  outline: none;
+}
+
+.dropdown-caret {
+  font-size: 12px;
+  letter-spacing: 0;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-nav.open .dropdown-caret {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  list-style: none;
+  margin-top: 10px;
+  min-width: 220px;
+  padding: 10px;
+  border: 1px solid rgba(79, 209, 200, 0.18);
+  background: var(--panel);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.dropdown-nav.open .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.dropdown-item span:last-child {
+  color: var(--muted);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus-visible,
+.dropdown-item.active {
+  background: rgba(79, 209, 200, 0.1);
+  color: var(--accent);
+  outline: none;
+}
+
+.dropdown-item.active span:last-child,
+.dropdown-item:hover span:last-child,
+.dropdown-item:focus-visible span:last-child {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .dropdown-nav {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+
+  .dropdown-toggle,
+  .dropdown-menu {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .nav-dots { right: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="dropdown-nav" id="dropdownNav">
+  <button class="dropdown-toggle" id="dropdownToggle" type="button" aria-expanded="false" aria-controls="dropdownMenu">
+    <span id="dropdownLabel">Home</span>
+    <span class="dropdown-caret">▾</span>
+  </button>
+  <ul class="dropdown-menu" id="dropdownMenu">
+    <li><button class="dropdown-item active" type="button" data-index="0" data-label="Home"><span>Home</span><span>01</span></button></li>
+    <li><button class="dropdown-item" type="button" data-index="1" data-label="Education"><span>Education</span><span>02</span></button></li>
+    <li><button class="dropdown-item" type="button" data-index="2" data-label="Passion"><span>Passion</span><span>03</span></button></li>
+    <li><button class="dropdown-item" type="button" data-index="3" data-label="Skills"><span>Skills</span><span>04</span></button></li>
+    <li><button class="dropdown-item" type="button" data-index="4" data-label="Experience"><span>Experience</span><span>05</span></button></li>
+    <li><button class="dropdown-item" type="button" data-index="5" data-label="Contact"><span>Contact</span><span>06</span></button></li>
+  </ul>
+</div>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" id="navDots">
+  <div class="nav-dot active" data-index="0" title="Home"></div>
+  <div class="nav-dot" data-index="1" title="Education"></div>
+  <div class="nav-dot" data-index="2" title="Passion"></div>
+  <div class="nav-dot" data-index="3" title="Skills"></div>
+  <div class="nav-dot" data-index="4" title="Education"></div>
+  <div class="nav-dot" data-index="5" title="Contact"></div>
+</nav>
+
+<div class="wrapper">
+
+  <!-- LEFT CONTENT COLUMN -->
+  <div class="content-col">
+
+    <!-- HERO -->
+    <section class="hero" id="sec-0">
+      <div class="hero-label">Health Sciences Portfolio</div>
+      <h1>Corey Li</h1>
+      <p class="hero-sub">
+        BHSc Health Sciences<br>
+        
+        Queen's University, Kingston ON
+      </p>
+      <div class="hero-scroll">
+     
+        Scroll to explore
+      </div>
+    </section>
+
+    <!-- ABOUT — BRAIN -->
+    <section class="section" data-part="region-head" id="sec-1">
+      <h2>Education</h2>
+      <p>I'm a Health Sciences student at Queen's University with a deep fascination for how the human body functions, from the firing of a single neuron to the choreography of entire organ systems. My academic journey sits at the intersection of biology, clinical research, and public health.
+        
+      </p>
+      <div class="section-tag tight">Relevant Coursework</div>
+      <div class="skills-grid">
+        <div class="skill-pill">HSCI190: Intro to Stats for Health Science</div>
+        <div class="skill-pill">ANAT100: Anatomy of the Human Body </div>
+        <div class="skill-pill">PHGY215: Mammalian Physiology</div>
+        <div class="skill-pill">BCHM270: Biochem Basis of Health & Disease</div>
+        <div class="skill-pill">MICR290: Antibiotic Resistance Lab</div>
+        <div class="skill-pill">GLPH271: Global and Population Health</div>
+        <div class="skill-pill">PHAR370: Fundamentals of Pharmacology</div>
+      </div>
+    </section>
+
+
+    <!-- PASSION — HEART -->
+    <section class="section" data-part="region-heart" id="sec-2">
+      <h2>Passion</h2>
+      <p>My commitment to medicine is rooted in a fundamental desire to help people during their most critical moments of need. I am drawn to Emergency Medicine because it offers the most direct opportunity to provide immediate care and advocacy for anyone who walks through the door, regardless of their circumstances.</p>
+    </section>
+
+
+    <!-- SKILLS — ARMS/HANDS -->
+    <section class="section" data-part="region-arms" id="sec-3">
+      <h2>Tools of<br>the trade</h2>
+      <p>From pipettes to statistical software, I've built a toolkit that bridges wet-lab technique with data-driven analysis. I believe rigorous methodology and clear communication are the pillars of impactful research.</p>
+      <div class="section-tag tight">Lab Techniques</div>
+      <div class="skills-grid tight">
+        <div class="skill-pill">SDS-PAGE & Westen Blot</div>
+        <div class="skill-pill">PCR / qPCR</div>
+        <div class="skill-pill">DNA Cloning</div>
+        <div class="skill-pill">ELISA</div>
+        <div class="skill-pill">Spectrophotometry</div>
+      </div>
+
+      <div class="section-tag tight">Technical Skills</div>
+      <div class="skills-grid tight">
+        <div class="skill-pill">SPSS</div>
+        <div class="skill-pill">R</div>
+        <div class="skill-pill">REDCap</div>
+        <div class="skill-pill">Python</div>
+      </div>
+
+      <div class="section-tag tight">Research Skills</div>
+      <div class="skills-grid tight">
+        <div class="skill-pill">Literature Review</div>
+        <div class="skill-pill">Data Analysis</div>
+        <div class="skill-pill">Academic Writing</div>
+        <div class="skill-pill">Grant Writting</div>
+      </div>
+    </section>
+
+
+    <!-- EDUCATION — TORSO/SPINE -->
+    <section class="section" data-part="region-torso" id="sec-4">
+      <h2>Building a<br>solid foundation</h2>
+      <p>My research experience has been shaped by exceptional mentors and hands-on research opportunities that go far beyond the classroom.</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">2026–</div>
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-title">Student Researcher</div>
+            <div class="tl-sub">School of Rehabilitation Therapy · Queen's University</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2025–</div>
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-title">Research Assistant</div>
+            <div class="tl-sub">Department of Psychology · Queen's University</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2025</div>
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-title">Research Assistant</div>
+            <div class="tl-sub">Interventional Psychiatry Program · St. Michael's Hospital</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024</div>
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-title">Student Researcher</div>
+            <div class="tl-sub">Department of Surgery · McMaster University</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CONTACT — LEGS/FORWARD -->
+    <section class="section" data-part="region-legs" id="sec-5">
+      <h2>Let's move<br>forward</h2>
+      <p>Whether you're a researcher, clinician, or fellow student — I'm always open to collaboration, mentorship, or a good conversation about health systems.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:corey.li@queensu.ca">
+          <span>Email</span>
+          corey.li@queensu.ca
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/corey-li-694075221/" target="_blank" rel="noopener noreferrer">
+          <span>LinkedIn</span>
+          linkedin.com/in/corey-li-694075221
+        </a>
+        <a class="contact-link" href="https://orcid.org/0009-0004-7596-8910" target="_blank" rel="noopener noreferrer">
+          <span>ORCID</span>
+          orcid.org/0009-0004-7596-8910
+        </a>
+        <a class="contact-link" href="./Corey Li - CV.pdf" target="_blank" rel="noopener noreferrer">
+          <span>CV</span>
+          Download PDF ↗
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content-col -->
+
+  <!-- RIGHT BODY COLUMN -->
+  <div class="body-col">
+    <div class="body-svg-wrap">
+      <svg id="bodySVG" viewBox="0 0 240 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow-teal">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glow-red">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- ══ BACKGROUND BODY (always visible, dim) ══ -->
+        <!-- Head outline -->
+        <ellipse cx="120" cy="52" rx="34" ry="38" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Neck -->
+        <path d="M 108,87 L 106,108 L 134,108 L 132,87" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Shoulders -->
+        <path d="M 106,108 L 56,120 M 134,108 L 184,120" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Left arm -->
+        <path d="M 56,120 L 42,195 L 38,260 M 38,260 L 33,285 L 28,298 M 33,285 L 44,292" class="body-outline" style="stroke:#1c2d50"/>
+        <path d="M 46,120 L 30,195 L 26,260 M 26,260 L 21,285 L 16,298 M 21,285 L 32,292" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Right arm -->
+        <path d="M 184,120 L 198,195 L 202,260 M 202,260 L 207,285 L 212,298 M 207,285 L 196,292" class="body-outline" style="stroke:#1c2d50"/>
+        <path d="M 194,120 L 210,195 L 214,260 M 214,260 L 219,285 L 224,298 M 219,285 L 208,292" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Torso sides -->
+        <path d="M 56,120 L 62,178 L 64,250 L 72,295 L 82,310" class="body-outline" style="stroke:#1c2d50"/>
+        <path d="M 184,120 L 178,178 L 176,250 L 168,295 L 158,310" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Pelvis bottom -->
+        <path d="M 82,310 L 87,320 L 120,325 L 153,320 L 158,310" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Left leg -->
+        <path d="M 87,320 L 80,400 L 76,470 L 72,498 M 72,498 L 60,502 L 88,505" class="body-outline" style="stroke:#1c2d50"/>
+        <path d="M 101,320 L 96,400 L 92,470 L 88,498 M 88,498 L 76,502 L 104,505" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Right leg -->
+        <path d="M 153,320 L 160,400 L 164,470 L 168,498 M 168,498 L 180,502 L 152,505" class="body-outline" style="stroke:#1c2d50"/>
+        <path d="M 139,320 L 144,400 L 148,470 L 152,498 M 152,498 L 164,502 L 136,505" class="body-outline" style="stroke:#1c2d50"/>
+        <!-- Knee indicators -->
+        <circle cx="88" cy="403" r="6" class="body-outline" style="stroke:#1c2d50;fill:none"/>
+        <circle cx="152" cy="403" r="6" class="body-outline" style="stroke:#1c2d50;fill:none"/>
+        <!-- Inner body lines -->
+        <!-- Center spine -->
+        <path d="M 120,108 L 120,310" class="body-inner"/>
+        <!-- Collar bone -->
+        <path d="M 106,115 Q 120,112 134,115" class="body-inner"/>
+        <!-- Rib cage outline -->
+        <path d="M 72,135 L 70,175 L 75,215 L 120,225 L 165,215 L 170,175 L 168,135" class="body-inner"/>
+        <!-- Ribs -->
+        <path d="M 85,148 Q 120,155 155,148" class="body-inner" style="opacity:0.25"/>
+        <path d="M 82,163 Q 120,170 158,163" class="body-inner" style="opacity:0.25"/>
+        <path d="M 78,178 Q 120,185 162,178" class="body-inner" style="opacity:0.25"/>
+        <path d="M 77,193 Q 120,200 163,193" class="body-inner" style="opacity:0.25"/>
+        <!-- Hip bones -->
+        <path d="M 82,270 Q 100,280 120,278 Q 140,280 158,270" class="body-inner"/>
+        <!-- Elbow marks -->
+        <circle cx="36" cy="196" r="4.5" class="body-outline" style="stroke:#1c2d50;fill:none"/>
+        <circle cx="204" cy="196" r="4.5" class="body-outline" style="stroke:#1c2d50;fill:none"/>
+
+        <!-- ══ REGION: HEAD ══ -->
+        <g id="region-head" class="region-head">
+          <ellipse cx="120" cy="52" rx="34" ry="38" class="body-outline"/>
+          <!-- Brain outline -->
+          <path d="M 98,42 Q 95,28 105,22 Q 115,18 120,22 Q 130,18 135,26 Q 143,30 140,42 Q 145,50 138,56 Q 130,62 120,60 Q 110,62 102,56 Q 95,50 98,42 Z" class="organ-marker" style="stroke-dasharray:none"/>
+          <!-- Brain folds -->
+          <path d="M 108,28 Q 112,35 110,42" class="organ-marker" style="stroke-width:0.5;opacity:0.6"/>
+          <path d="M 120,24 Q 120,32 118,40" class="organ-marker" style="stroke-width:0.5;opacity:0.6"/>
+          <path d="M 130,28 Q 128,36 130,42" class="organ-marker" style="stroke-width:0.5;opacity:0.6"/>
+          <path d="M 101,46 Q 112,50 123,48 Q 134,50 139,46" class="organ-marker" style="stroke-width:0.5;opacity:0.6"/>
+        </g>
+
+        <!-- ══ REGION: HEART ══ -->
+        <g id="region-heart" class="region-heart">
+          <!-- Chest outline glow -->
+          <path d="M 68,128 L 66,190 L 72,215 L 120,222 L 168,215 L 174,190 L 172,128" class="body-outline"/>
+          <!-- Heart shape -->
+          <path d="M 120,185 C 120,185 100,170 98,158 C 96,146 108,140 116,150 C 118,153 120,156 120,156 C 120,156 122,153 124,150 C 132,140 144,146 142,158 C 140,170 120,185 120,185 Z" class="organ-marker" style="stroke-dasharray:none"/>
+          <!-- Aorta -->
+          <path d="M 120,156 L 118,142 Q 116,134 125,132 L 130,135" class="organ-marker" style="stroke-width:0.8"/>
+          <!-- Lung left -->
+          <path d="M 80,148 Q 75,155 76,175 Q 78,192 88,196 Q 99,196 104,185 Q 108,170 104,152 Q 100,140 88,140 Q 82,141 80,148 Z" class="organ-marker"/>
+          <!-- Lung right -->
+          <path d="M 160,148 Q 165,155 164,175 Q 162,192 152,196 Q 141,196 136,185 Q 132,170 136,152 Q 140,140 152,140 Q 158,141 160,148 Z" class="organ-marker"/>
+        </g>
+
+        <!-- ══ REGION: ARMS ══ -->
+        <g id="region-arms" class="region-arms">
+          <!-- Left arm full (double line for width) -->
+          <path d="M 56,120 L 42,195 L 38,260 M 38,260 L 33,285 L 28,298 M 33,285 L 44,292" class="body-outline"/>
+          <path d="M 46,120 L 30,195 L 26,260 M 26,260 L 21,285 L 16,298 M 21,285 L 32,292" class="body-outline"/>
+          <circle cx="36" cy="196" r="4.5" class="body-outline" style="fill:none"/>
+          <!-- Right arm full (double line for width) -->
+          <path d="M 184,120 L 198,195 L 202,260 M 202,260 L 207,285 L 212,298 M 207,285 L 196,292" class="body-outline"/>
+          <path d="M 194,120 L 210,195 L 214,260 M 214,260 L 219,285 L 224,298 M 219,285 L 208,292" class="body-outline"/>
+          <circle cx="204" cy="196" r="4.5" class="body-outline" style="fill:none"/>
+          <!-- Muscle indicator left upper arm -->
+          <path d="M 52,128 Q 42,160 40,190" class="organ-marker" style="stroke-dasharray:none;stroke-width:1.5;opacity:0.5"/>
+          <!-- Muscle indicator right -->
+          <path d="M 188,128 Q 198,160 200,190" class="organ-marker" style="stroke-dasharray:none;stroke-width:1.5;opacity:0.5"/>
+        </g>
+
+        <!-- ══ REGION: TORSO / SPINE ══ -->
+        <g id="region-torso" class="region-torso">
+          <!-- Spine vertebrae -->
+          <path d="M 120,108 L 120,310" class="body-outline" style="stroke-dasharray:none;stroke-width:1.5"/>
+          <rect x="115" y="118" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="132" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="146" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="160" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="174" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="188" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="202" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="216" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="230" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="244" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <rect x="115" y="258" width="10" height="6" rx="1" class="organ-marker" style="stroke-dasharray:none"/>
+          <!-- Pelvis -->
+          <path d="M 78,285 Q 80,270 120,266 Q 160,270 162,285 Q 164,300 156,310 L 120,315 L 84,310 Q 76,300 78,285 Z" class="organ-marker"/>
+        </g>
+
+        <!-- ══ REGION: LEGS ══ -->
+        <g id="region-legs" class="region-legs">
+          <!-- Left leg (double line) -->
+          <path d="M 87,320 L 80,400 L 76,470 L 72,498 M 72,498 L 60,502 L 88,505" class="body-outline"/>
+          <path d="M 101,320 L 96,400 L 92,470 L 88,498 M 88,498 L 76,502 L 104,505" class="body-outline"/>
+          <circle cx="88" cy="403" r="6" class="body-outline" style="fill:none"/>
+          <!-- Right leg (double line) -->
+          <path d="M 153,320 L 160,400 L 164,470 L 168,498 M 168,498 L 180,502 L 152,505" class="body-outline"/>
+          <path d="M 139,320 L 144,400 L 148,470 L 152,498 M 152,498 L 164,502 L 136,505" class="body-outline"/>
+          <circle cx="152" cy="403" r="6" class="body-outline" style="fill:none"/>
+          <!-- Quad muscle left -->
+          <path d="M 90,325 Q 84,360 84,395" class="organ-marker" style="stroke-dasharray:none;stroke-width:1.5;opacity:0.5"/>
+          <path d="M 97,325 Q 92,360 90,395" class="organ-marker" style="stroke-dasharray:none;stroke-width:0.8;opacity:0.35"/>
+          <!-- Quad muscle right -->
+          <path d="M 150,325 Q 156,360 156,395" class="organ-marker" style="stroke-dasharray:none;stroke-width:1.5;opacity:0.5"/>
+          <path d="M 143,325 Q 148,360 150,395" class="organ-marker" style="stroke-dasharray:none;stroke-width:0.8;opacity:0.35"/>
+          <!-- Ankle marks -->
+          <path d="M 78,472 Q 76,480 74,488" class="organ-marker" style="stroke-dasharray:none;opacity:0.5"/>
+          <path d="M 162,472 Q 164,480 166,488" class="organ-marker" style="stroke-dasharray:none;opacity:0.5"/>
+        </g>
+
+        <!-- ══ STATIC SKELETON LINES (arms/torso always dim visible) ══ -->
+        <!-- Neck always -->
+        <path d="M 108,87 L 106,108 L 134,108 L 132,87" fill="none" stroke="#1c2d50" stroke-width="1.2"/>
+        <!-- Shoulder lines always -->
+        <path d="M 106,108 L 56,120 M 134,108 L 184,120" fill="none" stroke="#1c2d50" stroke-width="1.2"/>
+        <!-- Torso sides always (narrowed waist) -->
+        <path d="M 56,120 L 62,178 L 64,250 L 72,295 L 82,310" fill="none" stroke="#1c2d50" stroke-width="1.2"/>
+        <path d="M 184,120 L 178,178 L 176,250 L 168,295 L 158,310" fill="none" stroke="#1c2d50" stroke-width="1.2"/>
+        <!-- Pelvis always -->
+        <path d="M 82,310 L 87,320 L 120,325 L 153,320 L 158,310" fill="none" stroke="#1c2d50" stroke-width="1.2"/>
+
+        <!-- Center measurement line -->
+        <line x1="120" y1="520" x2="120" y2="535" stroke="#1c2d50" stroke-width="0.7"/>
+        <line x1="110" y1="535" x2="130" y2="535" stroke="#1c2d50" stroke-width="0.7"/>
+        <text x="108" y="548" font-family="Space Mono" font-size="6" fill="#2a3a5c" letter-spacing="0.1em">REF 001</text>
+
+        <!-- Vertical reference line -->
+        <line x1="120" y1="8" x2="120" y2="15" stroke="#1c2d50" stroke-width="0.7" stroke-dasharray="2,2"/>
+        <text x="96" y="7" font-family="Space Mono" font-size="6" fill="#2a3a5c" letter-spacing="0.1em">ANTERIOR VIEW</text>
+
+        <!-- ══ ANNOTATION TOP LAYER — always renders in front ══ -->
+        <g class="region-head">
+          <circle cx="88" cy="40" r="2.5" class="anno-dot"/>
+          <line x1="55" y1="40" x2="85" y2="40" class="anno-line"/>
+          <text x="8" y="43" class="body-label">Cortex</text>
+        </g>
+        <g class="region-heart">
+          <circle cx="118" cy="162" r="2.5" class="anno-dot"/>
+          <line x1="56" y1="162" x2="115" y2="162" class="anno-line"/>
+          <text x="57" y="158" class="body-label">Heart</text>
+          <circle cx="152" cy="170" r="2.5" class="anno-dot"/>
+          <line x1="153" y1="170" x2="176" y2="170" class="anno-line"/>
+          <text x="156" y="166" class="body-label">Lung</text>
+        </g>
+        <g class="region-arms">
+          <circle cx="36" cy="155" r="2.5" class="anno-dot"/>
+          <line x1="14" y1="155" x2="33" y2="155" class="anno-line"/>
+          <text x="-20" y="158" class="body-label">Bicep</text>
+          <circle cx="204" cy="155" r="2.5" class="anno-dot"/>
+          <line x1="207" y1="155" x2="224" y2="155" class="anno-line"/>
+          <text x="226" y="158" class="body-label">Bicep</text>
+        </g>
+        <g class="region-torso">
+          <circle cx="120" cy="200" r="2.5" class="anno-dot"/>
+          <line x1="123" y1="200" x2="175" y2="200" class="anno-line"/>
+          <text x="178" y="203" class="body-label">Spine</text>
+        </g>
+        <g class="region-legs">
+          <circle cx="82" cy="358" r="2.5" class="anno-dot"/>
+          <line x1="55" y1="358" x2="79" y2="358" class="anno-line"/>
+          <text x="5" y="361" class="body-label">Femur</text>
+          <circle cx="80" cy="440" r="2.5" class="anno-dot"/>
+          <line x1="45" y1="440" x2="77" y2="440" class="anno-line"/>
+          <text x="-8" y="443" class="body-label">Tibia</text>
+        </g>
+
+      </svg>
+    </div>
+  </div><!-- /body-col -->
+
+</div><!-- /wrapper -->
+
+
+
+
+
+<script>
+  const allSecs     = Array.from(document.querySelectorAll('#sec-0, .section'));
+  const navDots     = Array.from(document.querySelectorAll('.nav-dot'));
+  const dropdownNav = document.getElementById('dropdownNav');
+  const dropdownToggle = document.getElementById('dropdownToggle');
+  const dropdownLabel = document.getElementById('dropdownLabel');
+  const dropdownItems = Array.from(document.querySelectorAll('.dropdown-item'));
+  const progressBar = document.getElementById('progressBar');
+  const bodySVG     = document.getElementById('bodySVG');
+
+  let current   = 0;
+  let animating = false;
+  const COOLDOWN = 1600;
+
+  const DEFAULT_VB = { x:0, y:0, w:240, h:560 };
+  const REGIONS = {
+    'region-head':  { vb:{x:66, y:4,   w:108, h:100}, pt:[120,52],  color:'#4fd1c8' },
+    'region-heart': { vb:{x:52, y:120, w:136, h:122}, pt:[120,175], color:'#e05878' },
+    'region-arms':  { vb:{x:10, y:112, w:220, h:188}, pt:[36,170],  color:'#4fd1c8' },
+    'region-torso': { vb:{x:70, y:102, w:100, h:222}, pt:[120,210], color:'#c8a055' },
+    'region-legs':  { vb:{x:54, y:308, w:132, h:218}, pt:[88,395],  color:'#4fd1c8' },
+  };
+
+  let vbAnimId  = null;
+  let currentVB = { ...DEFAULT_VB };
+  let activePtId = null;
+
+  function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+  function lerp(a,b,t) { return a+(b-a)*t; }
+
+  function animateVB(target, onDone) {
+    if (vbAnimId) cancelAnimationFrame(vbAnimId);
+    const start = {...currentVB}, t0 = performance.now(), DUR = 1000;
+    function step(now) {
+      const t = Math.min((now-t0)/DUR,1), e = ease(t);
+      currentVB = {x:lerp(start.x,target.x,e),y:lerp(start.y,target.y,e),w:lerp(start.w,target.w,e),h:lerp(start.h,target.h,e)};
+      bodySVG.setAttribute('viewBox',`${currentVB.x} ${currentVB.y} ${currentVB.w} ${currentVB.h}`);
+      if (t < 1) { vbAnimId = requestAnimationFrame(step); }
+      else { currentVB = {...target}; if (onDone) onDone(); }
+    }
+    vbAnimId = requestAnimationFrame(step);
+  }
+
+  function clearActiveParts() {
+    document.querySelectorAll('[id^="region-"]').forEach(el => el.classList.remove('active'));
+  }
+
+  function setDropdownState(open) {
+    dropdownNav.classList.toggle('open', open);
+    dropdownToggle.setAttribute('aria-expanded', String(open));
+  }
+
+  function syncNavigation() {
+    navDots.forEach((d,i)=>d.classList.toggle('active', i===current));
+    dropdownItems.forEach((item,i)=>item.classList.toggle('active', i===current));
+    dropdownLabel.textContent = dropdownItems[current]?.dataset.label || 'Menu';
+  }
+
+  function goTo(idx) {
+    if (idx===current || animating) return;
+    animating = true;
+    setTimeout(()=>{ animating=false; }, COOLDOWN);
+
+    allSecs[current].classList.remove('visible');
+    current = idx;
+    const sec = allSecs[current];
+    sec.classList.add('visible');
+
+    syncNavigation();
+    progressBar.style.width = (current/(allSecs.length-1)*100)+'%';
+
+    clearActiveParts();
+    const part = sec.dataset.part;
+    if (part) {
+      const el = document.getElementById(part);
+      if (el) el.classList.add('active');
+      const rd = REGIONS[part];
+      activePtId = part;
+      animateVB(rd ? rd.vb : DEFAULT_VB, ()=>{
+      });
+    } else {
+      animateVB(DEFAULT_VB);
+    }
+  }
+
+  // Init
+  allSecs[0].classList.add('visible');
+  syncNavigation();
+  progressBar.style.width = '0%';
+
+  // Wheel
+  let wheelAcc = 0;
+  const WHEEL_THRESH = 80;
+  window.addEventListener('wheel', e=>{
+    e.preventDefault();
+    wheelAcc += e.deltaY;
+    if (wheelAcc > WHEEL_THRESH)       { wheelAcc=0; goTo(Math.min(current+1, allSecs.length-1)); }
+    else if (wheelAcc < -WHEEL_THRESH) { wheelAcc=0; goTo(Math.max(current-1, 0)); }
+  }, { passive:false });
+
+  // Touch
+  let touchY = null;
+  window.addEventListener('touchstart', e=>{ touchY=e.touches[0].clientY; }, {passive:true});
+  window.addEventListener('touchend', e=>{
+    if (touchY===null) return;
+    const dy = touchY-e.changedTouches[0].clientY;
+    if (Math.abs(dy)>40) dy>0 ? goTo(Math.min(current+1,allSecs.length-1)) : goTo(Math.max(current-1,0));
+    touchY=null;
+  }, {passive:true});
+
+  // Keyboard
+  window.addEventListener('keydown', e=>{
+    if (e.key==='ArrowDown'||e.key==='PageDown') goTo(Math.min(current+1,allSecs.length-1));
+    if (e.key==='ArrowUp'  ||e.key==='PageUp')   goTo(Math.max(current-1,0));
+  });
+
+  // Nav dots
+  navDots.forEach((dot,i)=>dot.addEventListener('click',()=>goTo(i)));
+
+  dropdownToggle.addEventListener('click', ()=>{
+    setDropdownState(!dropdownNav.classList.contains('open'));
+  });
+
+  dropdownItems.forEach(item => item.addEventListener('click', ()=>{
+    setDropdownState(false);
+    goTo(Number(item.dataset.index));
+  }));
+
+  document.addEventListener('click', e => {
+    if (!dropdownNav.contains(e.target)) setDropdownState(false);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') setDropdownState(false);
+  });
+</script>
+
+
+</body>
+</html>
